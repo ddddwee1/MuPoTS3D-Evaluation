@@ -1,9 +1,12 @@
 import numpy as np 
 import norm_pose
 
-def match(pose1, pose2, o1=None, trav=None, threshold=4000):
+def match(pose1, pose2, o1=None, trav=None, threshold=56.5685):
+	# threshold is directly copied from original script, but may need to be adjusted
+    # original one use 40 but manhattan distance, here we choose euclidean distance 
     # pose: [2, num_pts]
     # vis: [1, num_pts]
+    # trav: placeholder argument 
     matches = []
     p2 = np.float32(pose2)
     if o1 is not None:
@@ -19,6 +22,7 @@ def match(pose1, pose2, o1=None, trav=None, threshold=4000):
             diffs.append(diff)
         diffs = np.float32(diffs)
         idx = np.argmin(diffs)
+        # print(diffs.min())
         if diffs.min()>threshold:
             matches.append(-1)
         else:
