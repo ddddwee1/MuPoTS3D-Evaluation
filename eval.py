@@ -16,7 +16,7 @@ num_joints = len(o1)
 
 test_annot_base = './MultiPersonTestSet/'
 
-evaluation_mode = 1  # 0 for all, 1 for matched 
+evaluation_mode = 0  # 0 for all, 1 for matched 
 safe_traversal_order = [15,16,2,1,17,3,4,5,6,7,8,9,10,11,12,13,14]
 safe_traversal_order = [i-1 for i in safe_traversal_order]
 sequencewise_per_joint_error = []
@@ -68,7 +68,7 @@ for ts in range(20):
         # pred_p2d = copy.deepcopy(gt_p2d)
         # pred_p3d = copy.deepcopy(gt_p3d)
         # pred_vis = copy.deepcopy(gt_vis)
-        pred_p3d = util.load_pred.get_pred(ts+1, i)
+        pred_p3d = util.load_pred.get_pred(ts, i)
 
         matches = util.matcher.match(gt_p3d, pred_p3d, o1, safe_traversal_order[1:])
         for k in range(len(matches)):
@@ -103,3 +103,5 @@ pck_curve_array, pck_array, auc_array = util.evaluate.calculate_multiperson_erro
 pickle.dump(pck_curve_array, open('pck_curve_array.pkl', 'wb'))
 pickle.dump(pck_array, open('pck_array.pkl', 'wb'))
 pickle.dump(auc_array, open('auc_array.pkl', 'wb'))
+pck_mean = sum([i[-1] for i in pck_array]) / len(pck_array)
+print(pck_mean) 
